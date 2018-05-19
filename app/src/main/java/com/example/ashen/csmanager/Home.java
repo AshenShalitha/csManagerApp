@@ -1,5 +1,6 @@
 package com.example.ashen.csmanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -80,13 +81,16 @@ public class Home extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_myProfile) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_fuelStations) {
 
-        } else if (id == R.id.nav_slideshow) {
+            Intent intent = new Intent(Home.this,SelectedFuelStations.class);
+            startActivity(intent);
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_vehicles) {
+
+        } else if (id == R.id.nav_transactions) {
 
         } else if (id == R.id.nav_share) {
 

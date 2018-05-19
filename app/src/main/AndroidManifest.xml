@@ -21,6 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SelectedFuelStations"
+            android:label="@string/title_activity_selected_fuel_stations"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".AllFuelStations"></activity>
     </application>
 
 </manifest>
