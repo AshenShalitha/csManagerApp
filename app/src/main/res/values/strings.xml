@@ -8,4 +8,12 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_fuel_stations">FuelStations</string>
     <string name="title_activity_selected_fuel_stations">SelectedFuelStations</string>
+
+    <string name="user_prompt">Choose an user type</string>
+    <string-array name="usertype">
+        <item>Select User Type</item>
+        <item>Person</item>
+        <item>Company</item>
+    </string-array>
+
 </resources>

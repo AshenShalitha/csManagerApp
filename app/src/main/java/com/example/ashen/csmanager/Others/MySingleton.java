@@ -1,4 +1,4 @@
-package com.example.ashen.csmanager;
+package com.example.ashen.csmanager.Others;
 
 import android.content.Context;
 

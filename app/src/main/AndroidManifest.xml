@@ -12,20 +12,30 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Home"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".Activities.Home"
+            android:theme="@style/AppTheme.Dark"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".SelectedFuelStations"
-            android:label="@string/title_activity_selected_fuel_stations"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AllFuelStations"></activity>
+            android:name=".Activities.SelectedFuelStations"
+            android:theme="@style/AppTheme.Dark"
+            android:label="@string/title_activity_selected_fuel_stations" />
+        <activity
+            android:name=".Activities.AllFuelStations"
+            android:theme="@style/AppTheme.Dark">
+        </activity>
+        <activity
+            android:name=".Activities.Login"
+            android:theme="@style/AppTheme.Dark">
+        </activity>
+        <activity
+            android:name=".Activities.Signup"
+            android:theme="@style/AppTheme.Dark">
+        </activity>
     </application>
 
 </manifest>

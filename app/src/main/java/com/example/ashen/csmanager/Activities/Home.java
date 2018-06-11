@@ -1,4 +1,4 @@
-package com.example.ashen.csmanager;
+package com.example.ashen.csmanager.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,9 +13,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
-public class Home extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.example.ashen.csmanager.Others.MySingleton;
+import com.example.ashen.csmanager.Others.SessionManager;
+import com.example.ashen.csmanager.R;
+
+import static com.example.ashen.csmanager.Others.EndPoints.ROOT_URL;
+
+public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private Button logoutBtn;
+    SessionManager sessionManager;
+    private String logoutUserUrl = ROOT_URL+"customers/logout";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +55,10 @@ public class Home extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        sessionManager = new SessionManager(Home.this);
+        sessionManager.checkLogin();
+
     }
 
     @Override
@@ -92,14 +110,31 @@ public class Home extends AppCompatActivity
 
         } else if (id == R.id.nav_transactions) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_logout) {
+            logoutUser();
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void logoutUser()
+    {
+        sessionManager.logoutUser();
+        StringRequest stringRequest =new StringRequest(Request.Method.GET, logoutUserUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        MySingleton.getInstance(Home.this).addToRequestQueue(stringRequest);
+        finish();
     }
 }
