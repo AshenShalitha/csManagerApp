@@ -205,12 +205,15 @@ public class Signup extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     success = jsonObject.getBoolean("success");
-                    if(success)
-                    {
+                    if(success){
                         progressDialog.dismiss();
                         onSignupSuccess();
                     }
-
+                    else{
+                        progressDialog.dismiss();
+                        Toast.makeText(getBaseContext(),jsonObject.getString("status"), Toast.LENGTH_LONG).show();
+                        onSignupFailed();
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -220,9 +223,7 @@ public class Signup extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                Toast.makeText(getBaseContext(),"Username is already taken", Toast.LENGTH_LONG).show();
-                onSignupFailed();
+                Toast.makeText(Signup.this,error.getMessage(),Toast.LENGTH_LONG).show();
             }
         }){
             @Override
