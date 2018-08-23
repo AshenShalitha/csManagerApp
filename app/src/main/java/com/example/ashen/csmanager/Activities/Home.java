@@ -1,9 +1,11 @@
 package com.example.ashen.csmanager.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -57,7 +60,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView.setNavigationItemSelectedListener(this);
 
         sessionManager = new SessionManager(Home.this);
-        sessionManager.checkLogin();
+//        sessionManager.checkLogin();
+
 
     }
 
@@ -100,7 +104,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         int id = item.getItemId();
 
         if (id == R.id.nav_myProfile) {
-            // Handle the camera action
+
+            Intent intent = new Intent(Home.this,MyProfile.class);
+            startActivity(intent);
+
         } else if (id == R.id.nav_fuelStations) {
 
             Intent intent = new Intent(Home.this,SelectedFuelStations.class);
@@ -108,10 +115,35 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         } else if (id == R.id.nav_vehicles) {
 
+            Intent intent = new Intent(Home.this,Vehicles.class);
+            startActivity(intent);
+
         } else if (id == R.id.nav_transactions) {
 
+            Intent intent = new Intent(Home.this,Transactions.class);
+            startActivity(intent);
+
         } else if (id == R.id.nav_logout) {
-            logoutUser();
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Home.this);
+            alertDialogBuilder.setTitle("Logout?");
+            alertDialogBuilder
+                    .setMessage("Click yes to confirm")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            logoutUser();
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
         }
 
 
@@ -135,6 +167,5 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
         MySingleton.getInstance(Home.this).addToRequestQueue(stringRequest);
-        finish();
     }
 }

@@ -21,7 +21,7 @@ public class SessionManager {
     Context _context;
     int PRIVATE_MODE = 0;
 
-    private static final String PREF_NAME = "Fixit";
+    private static final String PREF_NAME = "csManager";
 
     private static final String IS_LOGIN = "IsLoggedIn";
     public static final String KEY_USERNAME = "username";

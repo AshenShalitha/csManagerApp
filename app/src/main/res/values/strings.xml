@@ -15,5 +15,7 @@
         <item>Person</item>
         <item>Company</item>
     </string-array>
+    <string name="title_activity_vehicles">Vehicles</string>
+    <string name="title_activity_transactions">Transactions</string>
 
 </resources>

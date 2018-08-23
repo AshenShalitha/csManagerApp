@@ -1,5 +1,8 @@
 package com.example.ashen.csmanager.Activities;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.ashen.csmanager.Adapters.TwoColumnListViewAdapter;
 import com.example.ashen.csmanager.Others.MySingleton;
+import com.example.ashen.csmanager.Others.SessionManager;
 import com.example.ashen.csmanager.R;
 
 import org.json.JSONArray;
@@ -38,10 +42,11 @@ public class AllFuelStations extends AppCompatActivity {
     private ArrayList<String> idlist = new ArrayList<String>();
     private ListView fuelStationLV;
     private TwoColumnListViewAdapter fsAdapter;
-    private ProgressBar spinner;
     private String fsListUrl = ROOT_URL+"fuelStations/getFSNamesAndCity";
-    private String idSendUrl = ROOT_URL+"fuelStations/addFuelStation";
+    private String sendDataToCustomerUrl = ROOT_URL+"customers/addFillingStation/";
+    private String sendDataToFuelStationUrl = ROOT_URL+"fuelStations/addFillingStation";
     private HashMap<String,String> temp;
+    private String token,customerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,20 +54,50 @@ public class AllFuelStations extends AppCompatActivity {
         setContentView(R.layout.activity_all_fuel_stations);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle("Add Fuel Stations");
+        setTitle("Add Filling Stations");
 
+        SessionManager sessionManager = new SessionManager(AllFuelStations.this);
+        token = sessionManager.getUserDetails().get("token");
+        customerId = sessionManager.getUserDetails().get("id");
         fuelStationLV = (ListView) findViewById(R.id.list_view);
-        spinner = (ProgressBar)findViewById(R.id.progressBar1);
 
-        spinner.setVisibility(View.VISIBLE);
         //fetching fuel station names and city
         fetchData();
 
         fuelStationLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(AllFuelStations.this,idlist.get(position),Toast.LENGTH_LONG).show();
-                onClick(position);
+
+            }
+        });
+        fuelStationLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AllFuelStations.this);
+                alertDialogBuilder.setTitle("Add Filling Station");
+                alertDialogBuilder
+                        .setMessage("Click yes to confirm")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(AllFuelStations.this,"Your request has been sent!",Toast.LENGTH_LONG).show();
+                                sendDataToCustomer(position);   //update customer document as pending
+//                                sendDataToFuelStation(position);  //update fuel station document as pending
+                                Intent intent = new Intent(AllFuelStations.this,SelectedFuelStations.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+                return true;
             }
         });
 
@@ -70,14 +105,13 @@ public class AllFuelStations extends AppCompatActivity {
 
 
 
-    //data fetching method
+    //Fetch all fuel stations names and city
     private void fetchData()
     {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, fsListUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
-                    if(!response.equals(""))spinner.setVisibility(View.INVISIBLE);
                     JSONArray jsonArray = new JSONArray(response);
                     for(int i=0;i<jsonArray.length();i++)
                     {
@@ -103,14 +137,56 @@ public class AllFuelStations extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
             }
-        });
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/json");
+                params.put("Authorization", "Bearer "+ token);
+                return params;
+            }
+        };
         MySingleton.getInstance(AllFuelStations.this).addToRequestQueue(stringRequest);
 
     }
 
-    public void onClick(final int x){
+    //update customer document as pending
+    public void sendDataToCustomer(final int x){
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, idSendUrl, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, sendDataToCustomerUrl+customerId, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(AllFuelStations.this,response,Toast.LENGTH_LONG).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(AllFuelStations.this,error.getMessage(),Toast.LENGTH_LONG).show();
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("status","pending");
+                params.put("fsid",idlist.get(x));
+                return params;
+            }
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("Authorization", "Bearer "+ token);
+//                return params;
+//            }
+        };
+        MySingleton.getInstance(AllFuelStations.this).addToRequestQueue(stringRequest);
+    }
+
+    //update fillingStation document
+    public void sendDataToFuelStation(final int x){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.PUT, sendDataToFuelStationUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if(response.equals("success")){
@@ -129,8 +205,14 @@ public class AllFuelStations extends AppCompatActivity {
                 params.put("selectedId",idlist.get(x));
                 return params;
             }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+ token);
+                return params;
+            }
         };
-        MySingleton.getInstance(AllFuelStations.this).addToRequestQueue(stringRequest);
+//        MySingleton.getInstance(AllFuelStations.this).addToRequestQueue(stringRequest);
     }
 
 }

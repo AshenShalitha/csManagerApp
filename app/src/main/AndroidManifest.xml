@@ -14,22 +14,20 @@
         <activity
             android:name=".Activities.Home"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.Dark">
-        </activity>
-
+            android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".Activities.SelectedFuelStations"
             android:label="@string/title_activity_selected_fuel_stations"
-            android:theme="@style/AppTheme.Dark" />
+            android:theme="@style/AppTheme.Dark1" />
         <activity
             android:name=".Activities.AllFuelStations"
-            android:theme="@style/AppTheme.Dark"></activity>
+            android:theme="@style/AppTheme.Dark1" />
         <activity
             android:name=".Activities.Login"
-            android:theme="@style/AppTheme.Dark"></activity>
+            android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".Activities.Signup"
-            android:theme="@style/AppTheme.Dark"></activity>
+            android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".Activities.SplashActivity"
             android:theme="@style/AppTheme.Dark">
@@ -39,6 +37,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Activities.MyProfile"
+            android:theme="@style/AppTheme.Dark1" />
+        <activity
+            android:name=".Activities.Vehicles"
+            android:label="@string/title_activity_vehicles"
+            android:theme="@style/AppTheme.Dark1" />
+        <activity
+            android:name=".Activities.Transactions"
+            android:label="@string/title_activity_transactions"
+            android:theme="@style/AppTheme.Dark1" />
+        <activity
+            android:name=".Activities.AddNewVehicle"
+            android:theme="@style/AppTheme.Dark1"/>
     </application>
 
 </manifest>

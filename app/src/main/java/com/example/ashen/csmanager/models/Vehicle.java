@@ -6,7 +6,7 @@ public class Vehicle {
 
     private String _id;
     private String vehicleName;
-    private String vehicleNumber;;
+    private String vehicleNumber;
     private String ownersId;
     private String addedBy;
     private int allocatedLimit;
