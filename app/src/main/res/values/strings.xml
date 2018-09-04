@@ -15,6 +15,15 @@
         <item>Person</item>
         <item>Company</item>
     </string-array>
+
+    <string-array name="fueltype">
+        <item>Select Fuel Type</item>
+        <item>Petrol</item>
+        <item>Super Petrol</item>
+        <item>Diesel</item>
+        <item>Super Diesel</item>
+    </string-array>
+
     <string name="title_activity_vehicles">Vehicles</string>
     <string name="title_activity_transactions">Transactions</string>
 

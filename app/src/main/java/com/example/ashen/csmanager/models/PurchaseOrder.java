@@ -1,36 +1,54 @@
 package com.example.ashen.csmanager.models;
 
-import java.sql.Timestamp;
-
 public class PurchaseOrder
 {
-    private String _id;
-    private String vehicleId;
+    private String vehicle;
+    private String vehicleNumber;
+    private String fuelStation;
     private String fuelType;;
     private String litres;
     private String price;
     private String enteredBy;
-    private String status;
-    private String fuelStationId;
-    private String customerId;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
-    private int _v;
+    private String customer;
+    private String createdAt;
 
-    public String get_id() {
-        return _id;
+    public PurchaseOrder() {
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public PurchaseOrder(String vehicle, String vehicleNumber, String fuelType, String litres, String price, String enteredBy, String customer, String createdAt, String fuelStation) {
+        this.vehicle = vehicle;
+        this.vehicleNumber = vehicleNumber;
+        this.fuelStation = fuelStation;
+        this.fuelType = fuelType;
+        this.litres = litres;
+        this.price = price;
+        this.enteredBy = enteredBy;
+        this.customer = customer;
+        this.createdAt = createdAt;
     }
 
-    public String getVehicleId() {
-        return vehicleId;
+    public String getVehicle() {
+        return vehicle;
     }
 
-    public void setVehicleId(String vehicleId) {
-        this.vehicleId = vehicleId;
+    public void setVehicle(String vehicle) {
+        this.vehicle = vehicle;
+    }
+
+    public String getVehicleNumber() {
+        return vehicleNumber;
+    }
+
+    public void setVehicleNumber(String vehicleNumber) {
+        this.vehicleNumber = vehicleNumber;
+    }
+
+    public String getFuelStation() {
+        return fuelStation;
+    }
+
+    public void setFuelStation(String fuelStation) {
+        this.fuelStation = fuelStation;
     }
 
     public String getFuelType() {
@@ -65,51 +83,19 @@ public class PurchaseOrder
         this.enteredBy = enteredBy;
     }
 
-    public String getStatus() {
-        return status;
+    public String getCustomer() {
+        return customer;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setCustomer(String customer) {
+        this.customer = customer;
     }
 
-    public String getFuelStationId() {
-        return fuelStationId;
-    }
-
-    public void setFuelStationId(String fuelStationId) {
-        this.fuelStationId = fuelStationId;
-    }
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
-
-    public Timestamp getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public int get_v() {
-        return _v;
-    }
-
-    public void set_v(int _v) {
-        this._v = _v;
     }
 }

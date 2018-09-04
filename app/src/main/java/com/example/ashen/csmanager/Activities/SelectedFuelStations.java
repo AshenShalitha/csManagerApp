@@ -1,5 +1,6 @@
 package com.example.ashen.csmanager.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -40,6 +41,7 @@ public class SelectedFuelStations extends AppCompatActivity {
     private HashMap<String,String> temp;
     private String token,customerId;
     private String getUrl = ROOT_URL+"customers/viewSelectedFuelStations";
+    private ProgressDialog loadingDialog;
 
 
     @Override
@@ -73,6 +75,10 @@ public class SelectedFuelStations extends AppCompatActivity {
 
     private void fetchData()
     {
+        loadingDialog = new ProgressDialog(SelectedFuelStations.this, R.style.AppTheme_Dark_Dialog);
+        loadingDialog.setIndeterminate(true);
+        loadingDialog.setMessage("Loading..");
+        loadingDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, getUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -90,6 +96,7 @@ public class SelectedFuelStations extends AppCompatActivity {
                     fsAdapter = new TwoColumnListViewAdapter(SelectedFuelStations.this,fuelStationList);
                     fsAdapter.notifyDataSetChanged();
                     selectedFsLV.setAdapter(fsAdapter);
+                    loadingDialog.dismiss();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -105,6 +112,12 @@ public class SelectedFuelStations extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
                 params.put("_id",customerId);
+                return params;
+            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+ token);
                 return params;
             }
         };

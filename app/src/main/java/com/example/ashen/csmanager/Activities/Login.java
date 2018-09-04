@@ -208,38 +208,43 @@ public class Login extends AppCompatActivity {
 
  }
 
- public void getUserDetails(final String username)
- {
-
-     StringRequest stringRequest = new StringRequest(Request.Method.POST, userDataUrl, new Response.Listener<String>() {
-         @Override
-         public void onResponse(String response) {
-             try {
-                 JSONArray jsonArray = new JSONArray(response);
-                 JSONObject jsonObject = jsonArray.getJSONObject(0);
-                 String id = jsonObject.getString("_id");
-                 String name = jsonObject.getString("name");
-                 session.createLoginSession(username,id,name,token);
-
-             } catch (JSONException e) {
-                 e.printStackTrace();
-             }
-
-         }
-     }, new Response.ErrorListener() {
-         @Override
-         public void onErrorResponse(VolleyError error) {
-
-         }
-     })
+     public void getUserDetails(final String username)
      {
-         @Override
-         protected Map<String, String> getParams() throws AuthFailureError {
-             Map<String,String> params = new HashMap<String, String>();
-             params.put("username",username);
-             return params;
-         }
-     };
-     MySingleton.getInstance(Login.this).addToRequestQueue(stringRequest);
- }
+
+         StringRequest stringRequest = new StringRequest(Request.Method.POST, userDataUrl, new Response.Listener<String>() {
+             @Override
+             public void onResponse(String response) {
+                 try {
+                     JSONArray jsonArray = new JSONArray(response);
+                     JSONObject jsonObject = jsonArray.getJSONObject(0);
+                     String id = jsonObject.getString("_id");
+                     String name = jsonObject.getString("name");
+                     session.createLoginSession(username,id,name,token);
+
+                 } catch (JSONException e) {
+                     e.printStackTrace();
+                 }
+
+             }
+         }, new Response.ErrorListener() {
+             @Override
+             public void onErrorResponse(VolleyError error) {
+
+             }
+         })
+         {
+             @Override
+             protected Map<String, String> getParams() throws AuthFailureError {
+                 Map<String,String> params = new HashMap<String, String>();
+                 params.put("username",username);
+                 return params;
+             }
+             public Map<String, String> getHeaders() throws AuthFailureError {
+                 Map<String, String> params = new HashMap<String, String>();
+                 params.put("Authorization", "Bearer "+ token);
+                 return params;
+             }
+         };
+         MySingleton.getInstance(Login.this).addToRequestQueue(stringRequest);
+     }
 }

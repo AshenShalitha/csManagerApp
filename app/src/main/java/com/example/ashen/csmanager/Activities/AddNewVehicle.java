@@ -67,6 +67,7 @@ public class AddNewVehicle extends AppCompatActivity {
                 submit();
             }
         });
+
     }
 
     public void submit()
@@ -164,14 +165,15 @@ public class AddNewVehicle extends AppCompatActivity {
 
                 return params;
             }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+ token);
+                return params;
+            }
         };
         MySingleton.getInstance(AddNewVehicle.this).addToRequestQueue(stringRequest);
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(AddNewVehicle.this,Vehicles.class);
-        startActivity(intent);
-        finish();
-    }
 }

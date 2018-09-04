@@ -1,5 +1,7 @@
 package com.example.ashen.csmanager.Activities;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,6 +49,7 @@ public class Vehicles extends AppCompatActivity {
     private String token,customerId;
     private String addUrl = ROOT_URL+"vehicles/vehiclesByOwnersId";
     private String deleteUrl = ROOT_URL+"vehicles";
+    private ProgressDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,19 +60,18 @@ public class Vehicles extends AppCompatActivity {
 
         vehiclesLV = (ListView)findViewById(R.id.list_view);
 
+        SessionManager sessionManager = new SessionManager(Vehicles.this);
+        token = sessionManager.getUserDetails().get("token");
+        customerId = sessionManager.getUserDetails().get("id");
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Vehicles.this,AddNewVehicle.class);
                 startActivity(intent);
-                finish();
             }
         });
-
-        SessionManager sessionManager = new SessionManager(Vehicles.this);
-        token = sessionManager.getUserDetails().get("token");
-        customerId = sessionManager.getUserDetails().get("id");
 
         fetchData();
 
@@ -102,10 +104,23 @@ public class Vehicles extends AppCompatActivity {
                 return true;
             }
         });
+
+        vehiclesLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(Vehicles.this,ViewVehicle.class);
+                intent.putExtra("customersId",idlist.get(position));
+                startActivity(intent);
+            }
+        });
     }
 
     public void fetchData()
     {
+        loadingDialog = new ProgressDialog(Vehicles.this, R.style.AppTheme_Dark_Dialog);
+        loadingDialog.setIndeterminate(true);
+        loadingDialog.setMessage("Loading..");
+        loadingDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, addUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -123,6 +138,7 @@ public class Vehicles extends AppCompatActivity {
                     vAdapter = new TwoColumnListViewAdapter(Vehicles.this,vehicleList);
                     vAdapter.notifyDataSetChanged();
                     vehiclesLV.setAdapter(vAdapter);
+                    loadingDialog.dismiss();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -138,6 +154,12 @@ public class Vehicles extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
                 params.put("ownersId",customerId);
+                return params;
+            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+ token);
                 return params;
             }
         };
@@ -157,7 +179,15 @@ public class Vehicles extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
             }
-        });
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+ token);
+                return params;
+            }
+        };
         MySingleton.getInstance(Vehicles.this).addToRequestQueue(stringRequest);
     }
 

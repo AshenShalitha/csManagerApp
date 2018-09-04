@@ -1,5 +1,6 @@
 package com.example.ashen.csmanager.Activities;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -47,6 +48,7 @@ public class AllFuelStations extends AppCompatActivity {
     private String sendDataToFuelStationUrl = ROOT_URL+"fuelStations/addFillingStation";
     private HashMap<String,String> temp;
     private String token,customerId;
+    private ProgressDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,10 +106,13 @@ public class AllFuelStations extends AppCompatActivity {
     }
 
 
-
     //Fetch all fuel stations names and city
     private void fetchData()
     {
+        loadingDialog = new ProgressDialog(AllFuelStations.this, R.style.AppTheme_Dark_Dialog);
+        loadingDialog.setIndeterminate(true);
+        loadingDialog.setMessage("Loading..");
+        loadingDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, fsListUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -126,6 +131,7 @@ public class AllFuelStations extends AppCompatActivity {
                     fsAdapter = new TwoColumnListViewAdapter(AllFuelStations.this,fuelStationList);
                     fsAdapter.notifyDataSetChanged();
                     fuelStationLV.setAdapter(fsAdapter);
+                    loadingDialog.dismiss();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -157,7 +163,7 @@ public class AllFuelStations extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, sendDataToCustomerUrl+customerId, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(AllFuelStations.this,response,Toast.LENGTH_LONG).show();
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -173,12 +179,12 @@ public class AllFuelStations extends AppCompatActivity {
                 params.put("fsid",idlist.get(x));
                 return params;
             }
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Authorization", "Bearer "+ token);
-//                return params;
-//            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+ token);
+                return params;
+            }
         };
         MySingleton.getInstance(AllFuelStations.this).addToRequestQueue(stringRequest);
     }
@@ -212,7 +218,7 @@ public class AllFuelStations extends AppCompatActivity {
                 return params;
             }
         };
-//        MySingleton.getInstance(AllFuelStations.this).addToRequestQueue(stringRequest);
+        MySingleton.getInstance(AllFuelStations.this).addToRequestQueue(stringRequest);
     }
 
 }

@@ -75,4 +75,5 @@ tools:context=".Activities.AddNewVehicle"
         android:text="Submit"/>
 
 
+
 </LinearLayout>

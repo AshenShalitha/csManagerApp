@@ -50,6 +50,11 @@
             android:theme="@style/AppTheme.Dark1" />
         <activity
             android:name=".Activities.AddNewVehicle"
+            android:theme="@style/AppTheme.Dark1" />
+        <activity
+            android:name=".Activities.AddTransaction"
+            android:theme="@style/AppTheme.Dark1" />
+        <activity android:name=".Activities.ViewVehicle"
             android:theme="@style/AppTheme.Dark1"/>
     </application>
 
