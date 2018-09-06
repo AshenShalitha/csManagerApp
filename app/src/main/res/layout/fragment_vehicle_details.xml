@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Fragments.VehicleDetailsFragment">
+
+    <LinearLayout
+        android:id="@+id/ll1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="24sp"
+        android:layout_below="@+id/appbar">
+
+        <TextView
+            android:id="@+id/vehicleNameTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8sp"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="@color/jet"
+            android:textAlignment="center"
+            />
+        <TextView
+            android:id="@+id/vehicleNumberTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8sp"
+            android:textSize="24sp"
+            android:textColor="@color/jet"
+            android:textAlignment="center"
+            />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16sp"
+            android:layout_marginBottom="16sp"
+            android:background="@color/primary"
+            android:layout_below="@id/fuelStation"/>
+
+        <TextView
+            android:id="@+id/allocatedLimitTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8sp"
+            android:textSize="20sp"
+            android:textColor="@color/jet"
+            />
+        <TextView
+            android:id="@+id/addedByTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8sp"
+            android:textSize="20sp"
+            android:textColor="@color/jet"
+            />
+        <Button
+            android:id="@+id/editBtn"
+            android:layout_width="250sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40sp"
+            android:padding="8sp"
+            android:text="EDIT" />
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="24sp"
+            android:layout_marginBottom="16sp"
+            android:background="@color/primary"
+            android:layout_below="@id/fuelStation"/>
+
+        <TextView
+            android:id="@+id/createdAtTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2sp"
+            android:textSize="16sp"
+            android:layout_marginRight="8sp"
+            android:textColor="@color/jet"
+            android:textAlignment="textEnd"
+            android:gravity="end" />
+        <TextView
+            android:id="@+id/lastUpdateAtTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2sp"
+            android:textSize="16sp"
+            android:layout_marginRight="8sp"
+            android:textColor="@color/jet"
+            android:textAlignment="textEnd"
+            android:gravity="end" />
+    </LinearLayout>
+
+</LinearLayout>

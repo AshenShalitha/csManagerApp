@@ -1,0 +1,9 @@
+[33m137cece[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m Add and view transactions
+[33m62aa9a1[m adding/deleting vehicle
+[33m74bd5b6[m View all fs,add new fs,view selected fs
+[33mc97e0fe[m Splash screen with updated login and registration
+[33m99b9b8d[m User registration $ login with shared preferences
+[33mc463336[m User registration $ login with shared preferences
+[33mfc1b64c[m Recycler view for fuel stations
+[33med28664[m Initial setup, volley/internet permission/vehicle model
+[33m0206109[m Initial commit, Navigation bar with blank home page

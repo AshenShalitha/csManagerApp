@@ -86,11 +86,7 @@ public class Vehicles extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(Vehicles.this,"Vehicle has been deleted!",Toast.LENGTH_LONG).show();
                                 deleteVehicle(position);
-                                Intent intent = new Intent(Vehicles.this,Vehicles.class);
-                                startActivity(intent);
-                                finish();
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -108,8 +104,8 @@ public class Vehicles extends AppCompatActivity {
         vehiclesLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(Vehicles.this,ViewVehicle.class);
-                intent.putExtra("customersId",idlist.get(position));
+                Intent intent = new Intent(Vehicles.this,VehicleDetails.class);
+                intent.putExtra("vehicleId",idlist.get(position));
                 startActivity(intent);
             }
         });
@@ -169,10 +165,19 @@ public class Vehicles extends AppCompatActivity {
 
     public void deleteVehicle(final int x)
     {
+        loadingDialog = new ProgressDialog(Vehicles.this, R.style.AppTheme_Dark_Dialog);
+        loadingDialog.setIndeterminate(true);
+        loadingDialog.setMessage("Deleting..");
+        loadingDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.DELETE, deleteUrl+"/"+idlist.get(x).toString(), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
+                if(loadingDialog!=null)
+                    loadingDialog.dismiss();
+                Toast.makeText(Vehicles.this,"Vehicle has been deleted!",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Vehicles.this,Vehicles.class);
+                startActivity(intent);
+                finish();
             }
         }, new Response.ErrorListener() {
             @Override

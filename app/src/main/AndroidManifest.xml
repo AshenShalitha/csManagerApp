@@ -54,8 +54,10 @@
         <activity
             android:name=".Activities.AddTransaction"
             android:theme="@style/AppTheme.Dark1" />
-        <activity android:name=".Activities.ViewVehicle"
-            android:theme="@style/AppTheme.Dark1"/>
+        <activity
+            android:name=".Activities.VehicleDetails"
+            android:label="@string/title_activity_vehicle_details"
+            android:theme="@style/AppTheme.Dark2"></activity>
     </application>
 
 </manifest>
