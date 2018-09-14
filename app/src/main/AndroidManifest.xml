@@ -65,6 +65,12 @@
             android:theme="@style/AppTheme.Dark2" />
         <activity
             android:name=".Activities.FuelStationDetailsActivity"
+            android:theme="@style/AppTheme.Dark1" />
+        <activity
+            android:name=".Activities.EditUserDetailsActivity"
+            android:theme="@style/AppTheme.Dark1" />
+        <activity
+            android:name=".Activities.ChangePaswordActivity"
             android:theme="@style/AppTheme.Dark1"/>
     </application>
 

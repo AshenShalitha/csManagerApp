@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,6 +7,7 @@
     tools:context=".Activities.MyProfile">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -20,4 +21,145 @@
 
     </android.support.design.widget.AppBarLayout>
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/ll1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appbar"
+        android:orientation="vertical"
+        android:layout_marginTop="48sp"
+        android:padding="8sp">
+
+        <TextView
+            android:id="@+id/customerNameTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8sp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/jet"
+            android:textAlignment="center"
+            />
+        <TextView
+            android:id="@+id/addressTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8sp"
+            android:textSize="16sp"
+            android:textColor="@color/jet"
+            android:textAlignment="center"
+            android:singleLine="false"
+            />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/hl1"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16sp"
+        android:layout_marginBottom="16sp"
+        android:background="@color/primary"
+        android:layout_below="@id/ll1"/>
+
+    <LinearLayout
+        android:id="@+id/ll2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hl1"
+        android:orientation="vertical"
+        android:layout_marginTop="16sp">
+
+        <TextView
+            android:id="@+id/userTypeTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8sp"
+            android:textSize="20sp"
+            android:textColor="@color/jet" />
+
+        <TextView
+            android:id="@+id/usernameTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8sp"
+            android:textSize="20sp"
+            android:textColor="@color/jet" />
+
+        <TextView
+            android:id="@+id/contactPersonTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8sp"
+            android:textSize="20sp"
+            android:textColor="@color/jet" />
+
+        <TextView
+            android:id="@+id/contactNumberTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8sp"
+            android:textSize="20sp"
+            android:textColor="@color/jet" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/hl2"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="32sp"
+        android:layout_marginBottom="16sp"
+        android:background="@color/primary"
+        android:layout_below="@id/ll2"/>
+
+    <LinearLayout
+        android:id="@+id/ll3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/hl2"
+        android:layout_marginTop="16sp"
+        android:padding="8sp">
+
+        <Button
+            android:id="@+id/editBTN"
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:text="Edit Details"/>
+        <Button
+            android:id="@+id/changePwBTN"
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:text="Reset password"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/ll3">
+
+        <TextView
+            android:id="@+id/createdAtTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2sp"
+            android:textSize="10sp"
+            android:layout_marginRight="8sp"
+            android:textColor="@color/jet"
+            android:textAlignment="textEnd"
+            android:gravity="end" />
+        <TextView
+            android:id="@+id/lastUpdateAtTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2sp"
+            android:textSize="10sp"
+            android:layout_marginRight="8sp"
+            android:textColor="@color/jet"
+            android:textAlignment="textEnd"
+            android:gravity="end" />
+
+    </LinearLayout>
+</RelativeLayout>
