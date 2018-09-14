@@ -60,7 +60,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView.setNavigationItemSelectedListener(this);
 
         sessionManager = new SessionManager(Home.this);
-//        sessionManager.checkLogin();
 
 
     }

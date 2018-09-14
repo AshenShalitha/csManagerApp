@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.ashen.csmanager.Adapters.TwoColumnListViewAdapter;
+import com.example.ashen.csmanager.Fragments.FuelStationTransactionsFragment;
 import com.example.ashen.csmanager.Others.MySingleton;
 import com.example.ashen.csmanager.Others.SessionManager;
 import com.example.ashen.csmanager.R;
@@ -69,7 +70,9 @@ public class AllFuelStations extends AppCompatActivity {
         fuelStationLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Intent intent = new Intent(AllFuelStations.this,FuelStationDetailsActivity.class);
+                intent.putExtra("fuelStationId",idlist.get(position));
+                startActivity(intent);
             }
         });
         fuelStationLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -89,6 +92,8 @@ public class AllFuelStations extends AppCompatActivity {
                                 Intent intent = new Intent(AllFuelStations.this,SelectedFuelStations.class);
                                 startActivity(intent);
                                 finish();
+                                Intent intent1 = new Intent("finish_activity");
+                                sendBroadcast(intent1);
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -102,7 +107,6 @@ public class AllFuelStations extends AppCompatActivity {
                 return true;
             }
         });
-
 
 
     }

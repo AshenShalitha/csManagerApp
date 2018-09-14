@@ -37,7 +37,18 @@
         android:layout_width="match_parent"
         android:id="@+id/rv"
         android:layout_marginTop="60dp"
+        android:layout_marginBottom="32sp"
         >
     </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/totalTV"
+        android:layout_width="match_parent"
+        android:layout_height="32sp"
+        android:layout_gravity="bottom"
+        android:padding="4sp"
+        android:background="@color/jet"
+
+        />
 
 </android.support.design.widget.CoordinatorLayout>

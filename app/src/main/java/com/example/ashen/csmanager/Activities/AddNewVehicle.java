@@ -86,6 +86,9 @@ public class AddNewVehicle extends AppCompatActivity {
             progressDialog.show();
             sendData();
 
+            Intent intent = new Intent("finish_activity");
+            sendBroadcast(intent);
+
         }
     }
 

@@ -254,6 +254,9 @@ public class AddTransaction extends AppCompatActivity {
             progressDialog.setCancelable(false);
             progressDialog.show();
             sendData();
+
+            Intent intent = new Intent("finish_activity");
+            sendBroadcast(intent);
         }
 
     }

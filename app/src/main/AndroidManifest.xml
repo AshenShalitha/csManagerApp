@@ -3,6 +3,7 @@
     package="com.example.ashen.csmanager">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -57,7 +58,14 @@
         <activity
             android:name=".Activities.VehicleDetails"
             android:label="@string/title_activity_vehicle_details"
-            android:theme="@style/AppTheme.Dark2"></activity>
+            android:theme="@style/AppTheme.Dark2" />
+        <activity
+            android:name=".Activities.FuelStationDetails"
+            android:label="@string/title_activity_fuel_station_details"
+            android:theme="@style/AppTheme.Dark2" />
+        <activity
+            android:name=".Activities.FuelStationDetailsActivity"
+            android:theme="@style/AppTheme.Dark1"/>
     </application>
 
 </manifest>

@@ -1,18 +1,16 @@
-package com.example.ashen.csmanager.Activities;
+package com.example.ashen.csmanager.Fragments;
 
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,72 +34,61 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import static com.example.ashen.csmanager.Others.EndPoints.ROOT_URL;
 
-public class Transactions extends AppCompatActivity {
 
-    private List<PurchaseOrder> purchaseOrderList;
-    private PurchaseOrder purchaseOrder;
+public class FuelStationTransactionsFragment extends Fragment {
+
+    View rootView;
+    private String transactionUrl = ROOT_URL+"purchaseOrders/transactionByFuelStationId";
     private RecyclerView rv;
+    private TextView tv;
     private TextView totalTV;
-    private String getdataUrl = ROOT_URL+"purchaseOrders/purchaseOrderByCustomer";
-    private String token,customerId;
+    private String fuelstationId,customerId,token;
+    private PurchaseOrder purchaseOrder;
+    private List<PurchaseOrder> purchaseOrderList;
     private ProgressDialog loadingDialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transactions);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_fuel_station_transactions, container, false);
 
-        SessionManager sessionManager = new SessionManager(Transactions.this);
+        Bundle extra = getActivity().getIntent().getExtras();
+        fuelstationId = extra.getString("fuelStationId");
+        Log.i("fuelStationId ",fuelstationId );
+
+        SessionManager sessionManager = new SessionManager(getActivity());
         token = sessionManager.getUserDetails().get("token");
         customerId = sessionManager.getUserDetails().get("id");
 
-        loadingDialog = new ProgressDialog(Transactions.this, R.style.AppTheme_Dark_Dialog);
+        totalTV = (TextView)rootView.findViewById(R.id.totalTV);
+        tv = (TextView)rootView.findViewById(R.id.tv);
+        rv = (RecyclerView)rootView.findViewById(R.id.rv);
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        rv.setLayoutManager(llm);
+
+        loadingDialog = new ProgressDialog(getActivity(), R.style.AppTheme_Dark_Dialog);
         loadingDialog.setIndeterminate(true);
         loadingDialog.setMessage("Loading..");
         loadingDialog.show();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Transactions.this,AddTransaction.class);
-                startActivity(intent);
-            }
-        });
 
-        totalTV = (TextView)findViewById(R.id.totalTV);
-        rv = (RecyclerView)findViewById(R.id.rv);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        rv.setLayoutManager(llm);
-
-        initializeData();
-
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context arg0, Intent intent) {
-                String action = intent.getAction();
-                if (action.equals("finish_activity")) {
-                    finish();
-                }
-            }
-        };
-        registerReceiver(broadcastReceiver, new IntentFilter("finish_activity"));
+        fetchTransactionData();
+        return rootView;
     }
 
-    private void initializeData() {
+    private void fetchTransactionData(){
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, getdataUrl, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,transactionUrl , new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
+                
                 purchaseOrderList = new ArrayList<PurchaseOrder>();
                 try {
                     JSONArray jsonArray = new JSONArray(response);
+                    if(jsonArray.isNull(0)){
+                        tv.setVisibility(View.VISIBLE);
+                    }
                     for(int i=jsonArray.length()-1;i>=0;i--){
                         JSONObject outerObject = jsonArray.getJSONObject(i);
                         JSONObject customerObj = outerObject.getJSONObject("customerId");
@@ -121,22 +108,24 @@ public class Transactions extends AppCompatActivity {
                     }
                     totalTV.setText("Total Number of Transactions : "+purchaseOrderList.size());
                     initializeAdapter();
-                    loadingDialog.dismiss();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                if(loadingDialog != null)
+                    loadingDialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Transactions.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),error.getMessage(),Toast.LENGTH_LONG).show();
             }
         })
         {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
-                params.put("ownersId",customerId);
+                params.put("fuelStationId",fuelstationId);
+                params.put("customerId",customerId);
                 return params;
             }
 
@@ -147,8 +136,7 @@ public class Transactions extends AppCompatActivity {
                 return params;
             }
         };
-        MySingleton.getInstance(Transactions.this).addToRequestQueue(stringRequest);
-
+        MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
 
     private void initializeAdapter(){
@@ -161,5 +149,6 @@ public class Transactions extends AppCompatActivity {
         String dateAndTime = s.substring(0,10)+" at "+s.substring(11,16);
         return dateAndTime;
     }
+
 
 }

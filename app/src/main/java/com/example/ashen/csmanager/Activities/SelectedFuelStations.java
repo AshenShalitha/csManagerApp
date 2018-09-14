@@ -1,12 +1,16 @@
 package com.example.ashen.csmanager.Activities;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -38,6 +42,7 @@ public class SelectedFuelStations extends AppCompatActivity {
     private ListView selectedFsLV;
     private TwoColumnListViewAdapter fsAdapter;
     private ArrayList<HashMap<String,String>> fuelStationList = new ArrayList<HashMap<String,String>>();
+    private ArrayList<String> idlist = new ArrayList<String>();
     private HashMap<String,String> temp;
     private String token,customerId;
     private String getUrl = ROOT_URL+"customers/viewSelectedFuelStations";
@@ -60,7 +65,6 @@ public class SelectedFuelStations extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(SelectedFuelStations.this,AllFuelStations.class);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -68,7 +72,27 @@ public class SelectedFuelStations extends AppCompatActivity {
         token = sessionManager.getUserDetails().get("token");
         customerId = sessionManager.getUserDetails().get("id");
 
+        selectedFsLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(SelectedFuelStations.this,FuelStationDetails.class);
+                intent.putExtra("fuelStationId",idlist.get(position));
+                startActivity(intent);
+            }
+        });
+
         fetchData();
+
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context arg0, Intent intent) {
+                String action = intent.getAction();
+                if (action.equals("finish_activity")) {
+                    finish();
+                }
+            }
+        };
+        registerReceiver(broadcastReceiver, new IntentFilter("finish_activity"));
 
     }
 
@@ -92,6 +116,7 @@ public class SelectedFuelStations extends AppCompatActivity {
                         temp.put(FIRST_COLUMN,jsonObject2.getJSONObject("fsid").getString("name"));
                         temp.put(SECOND_COLUMN,jsonObject2.getString("status"));
                         fuelStationList.add(temp);
+                        idlist.add(jsonObject2.getJSONObject("fsid").getString("_id"));
                     }
                     fsAdapter = new TwoColumnListViewAdapter(SelectedFuelStations.this,fuelStationList);
                     fsAdapter.notifyDataSetChanged();
